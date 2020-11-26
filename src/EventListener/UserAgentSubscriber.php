@@ -6,6 +6,7 @@ namespace App\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class UserAgentSubscriber implements EventSubscriberInterface
@@ -28,7 +29,7 @@ class UserAgentSubscriber implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event)
     {
         //dd($event);
-
+        //$event->setResponse(new Response('new response in UserAgentSubscriber@onKernelRequest'));
         //$this->logger->info('I\'m logging super early on the request');
 
         $request = $event->getRequest();
