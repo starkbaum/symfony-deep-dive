@@ -36,7 +36,7 @@ class ArticleController extends AbstractController
      * @param LoggerInterface $logger
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function homepage(ArticleRepository $repository, LoggerInterface $logger)
+    public function homepage(ArticleRepository $repository, LoggerInterface $logger, $isMac)
     {
         $articles = $repository->findAllPublishedOrderedByNewest();
 
@@ -44,6 +44,7 @@ class ArticleController extends AbstractController
 
         return $this->render('article/homepage.html.twig', [
             'articles' => $articles,
+            'isMac' => $isMac,
         ]);
     }
 
