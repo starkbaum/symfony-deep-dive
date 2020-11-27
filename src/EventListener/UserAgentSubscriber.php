@@ -6,6 +6,7 @@ namespace App\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
@@ -51,5 +52,24 @@ class UserAgentSubscriber implements EventSubscriberInterface
         $this->logger->info(sprintf('The User-Agent is "%s"', $userAgent));
         //$isMac = stripos($userAgent, 'Mac') !== false;
         //$request->attributes->set('isMac', $isMac);
+
+        $request->attributes->set('_isMac', $this->isMac($request));
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    private function isMac(Request $request): bool
+    {
+        //dump($request);
+
+        if ($request->query->has('mac')) {
+            return $request->query->getBoolean('mac');
+        }
+
+        $userAgent = $request->headers->get('User-Agent');
+
+        return stripos($userAgent, 'Mac') !== false;
     }
 }
