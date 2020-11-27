@@ -17,10 +17,17 @@ class ArticleController extends AbstractController
      * Currently unused: just showing a controller with a constructor!
      */
     private $isDebug;
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
 
-    public function __construct(bool $isDebug)
+    public function __construct(bool $isDebug, LoggerInterface $logger)
     {
         $this->isDebug = $isDebug;
+        $this->logger = $logger;
+
+        $this->logger->info('ArticleController instantiated');
     }
 
     /**
