@@ -7,6 +7,8 @@ use App\Repository\ArticleRepository;
 use App\Service\SlackClient;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,13 +36,29 @@ class ArticleController extends AbstractController
      * @Route("/", name="app_homepage")
      * @param ArticleRepository $repository
      * @param LoggerInterface $logger
+     * @param $isMac
+     * @param HttpKernelInterface $httpKernel
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function homepage(ArticleRepository $repository, LoggerInterface $logger, $isMac)
+    public function homepage(ArticleRepository $repository, LoggerInterface $logger, $isMac, HttpKernelInterface $httpKernel)
     {
         $articles = $repository->findAllPublishedOrderedByNewest();
 
         $logger->info('Inside the ArticleController');
+
+        /*
+        // manual sub request example
+        $request = new Request();
+        $request->attributes->set('_controller', 'App\\Controller\\PartialController::trendingQuotes');
+        $request->server->set('REMOTE_ADDR', '127.0.0.1');
+
+        $response = $httpKernel->handle(
+            $request,
+            HttpKernelInterface::SUB_REQUEST
+        );
+
+        dump($response);
+        */
 
         return $this->render('article/homepage.html.twig', [
             'articles' => $articles,

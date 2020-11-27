@@ -28,6 +28,10 @@ class UserAgentSubscriber implements EventSubscriberInterface
 
     public function onKernelRequest(RequestEvent $event)
     {
+        if (!$event->isMasterRequest()) {
+            return;
+        }
+
         //dd($event);
         //$event->setResponse(new Response('new response in UserAgentSubscriber@onKernelRequest'));
         //$this->logger->info('I\'m logging super early on the request');
