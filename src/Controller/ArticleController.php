@@ -54,8 +54,10 @@ class ArticleController extends AbstractController
      * @param ArticleRepository $articleRepository
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function show($slug, SlackClient $slack, ArticleRepository $articleRepository)
+    public function show($slug, SlackClient $slack, ArticleRepository $articleRepository, $isMac)
     {
+        dump($isMac);
+
         $article = $articleRepository->findOneBy(['slug' => $slug]);
 
         if (!$article) {
